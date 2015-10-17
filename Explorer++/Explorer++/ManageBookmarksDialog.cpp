@@ -697,15 +697,15 @@ void CManageBookmarksDialog::OnListViewHeaderRClick()
 				HTREEITEM hSelected = TreeView_GetSelection(hTreeView);
 				CBookmarkFolder &BookmarkFolder = m_pBookmarkTreeView->GetBookmarkFolderFromTreeView(hSelected);
 
-				int iItem = 0;
+				int inneriItem = 0;
 
 				for(auto itrBookmarks = BookmarkFolder.begin();itrBookmarks != BookmarkFolder.end();++itrBookmarks)
 				{
 					TCHAR szColumn[256];
 					GetBookmarkItemColumnInfo(*itrBookmarks,itr->ColumnType,szColumn,SIZEOF_ARRAY(szColumn));
-					ListView_SetItemText(hListView,iItem,iColumn,szColumn);
+					ListView_SetItemText(hListView,inneriItem,iColumn,szColumn);
 
-					++iItem;
+					++inneriItem;
 				}
 			}
 

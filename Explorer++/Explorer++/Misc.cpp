@@ -237,19 +237,19 @@ void Explorerplusplus::AdjustFolderPanePosition(void)
 
 	if(m_bShowDisplayWindow)
 	{
-		RECT rc;
+		RECT _rc;
 
-		GetWindowRect(m_hDisplayWindow,&rc);
+		GetWindowRect(m_hDisplayWindow,&_rc);
 
-		IndentBottom += rc.bottom - rc.top;
+		IndentBottom += _rc.bottom - _rc.top;
 	}
 
 	if(m_bShowFolders)
 	{
-		RECT rc;
-		GetClientRect(m_hHolder,&rc);
+		RECT _rc;
+		GetClientRect(m_hHolder,&_rc);
 
-		SetWindowPos(m_hHolder,NULL,0,IndentTop,rc.right,
+		SetWindowPos(m_hHolder,NULL,0,IndentTop,_rc.right,
 		height-IndentBottom-IndentTop,SWP_SHOWWINDOW|SWP_NOZORDER);
 	}
 }
