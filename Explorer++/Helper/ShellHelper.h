@@ -128,3 +128,4 @@ int				GetDefaultIcon(DefaultIconType defaultIconType);
 /* Infotips. */
 HRESULT			GetItemInfoTip(const TCHAR *szItemPath, TCHAR *szInfoTip, size_t cchMax);
 HRESULT			GetItemInfoTip(LPCITEMIDLIST pidlComplete, TCHAR *szInfoTip, size_t cchMax);
+void CALLBACK	GetInfoTipAPC(ULONG_PTR param);

@@ -140,6 +140,10 @@ void Explorerplusplus::OnCreate(void)
 	SetThreadPriority(m_hFolderSizeThread,THREAD_PRIORITY_BELOW_NORMAL);
 	QueueUserAPC(IconThreadInitialization,m_hFolderSizeThread,NULL);
 
+	m_hInfotipThread = CreateThread(NULL,0,Thread_IconFinder,NULL,0,NULL);
+	SetThreadPriority(m_hInfotipThread,THREAD_PRIORITY_BELOW_NORMAL);
+	QueueUserAPC(IconThreadInitialization,m_hInfotipThread,NULL);
+
 	/* These need to occur after the language module
 	has been initialized, but before the tabs are
 	restored. */
@@ -1143,6 +1147,18 @@ int Explorerplusplus::OnDestroy(void)
 
 	ChangeClipboardChain(m_hContainer,m_hNextClipboardViewer);
 	PostQuitMessage(0);
+
+	::CloseHandle(m_hIconThread);
+	m_hIconThread = nullptr;
+
+	::CloseHandle(m_hTreeViewIconThread);
+	m_hTreeViewIconThread = nullptr;
+
+	::CloseHandle(m_hFolderSizeThread);
+	m_hFolderSizeThread = nullptr;
+
+	::CloseHandle(m_hInfotipThread);
+	m_hInfotipThread = nullptr;
 
 	return 0;
 }

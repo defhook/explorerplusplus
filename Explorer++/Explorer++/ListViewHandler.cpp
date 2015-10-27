@@ -875,7 +875,6 @@ void Explorerplusplus::OnListViewColumnClick(LPARAM lParam)
 void Explorerplusplus::OnListViewGetInfoTip(LPARAM lParam)
 {
 	LPNMLVGETINFOTIP	pGetInfoTip	= NULL;
-	TCHAR				szInfoTip[512];
 
 	pGetInfoTip = (LPNMLVGETINFOTIP)lParam;
 	
@@ -884,19 +883,35 @@ void Explorerplusplus::OnListViewGetInfoTip(LPARAM lParam)
 	the rest of the info tip onto the name if it is there. */
 	if(m_bShowInfoTips)
 	{
-		CreateFileInfoTip(pGetInfoTip->iItem,szInfoTip,SIZEOF_ARRAY(szInfoTip));
-
-		if(lstrlen(pGetInfoTip->pszText) > 0)
-			StringCchCat(pGetInfoTip->pszText,pGetInfoTip->cchTextMax,_T("\n"));
-
-		StringCchCat(pGetInfoTip->pszText,pGetInfoTip->cchTextMax,
-			szInfoTip);
+		// Get tips in daemon thread
+		LPNMLVGETINFOTIP pTip = new NMLVGETINFOTIP(*pGetInfoTip);
+		pGetInfoTip->pszText[0] = 0;
+		ULONG_PTR* params = new ULONG_PTR[2];
+		params[0] = reinterpret_cast<ULONG_PTR>(this);
+		params[1] = reinterpret_cast<ULONG_PTR>(pTip);
+		::QueueUserAPC(GetInfoTipAPC, m_hInfotipThread, reinterpret_cast<ULONG_PTR>(params));
 	}
 	else
 	{
 		StringCchCopy(pGetInfoTip->pszText,pGetInfoTip->cchTextMax,
 			EMPTY_STRING);
 	}
+}
+
+
+void CALLBACK GetInfoTipAPC(ULONG_PTR param)
+{
+	ULONG_PTR* params = reinterpret_cast<ULONG_PTR*>(param);
+	Explorerplusplus* self = reinterpret_cast<Explorerplusplus*>(params[0]);
+	LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(params[1]);
+	delete[] params;
+
+	TCHAR szInfoTip[512] = {0};
+	self->CreateFileInfoTip(pGetInfoTip->iItem,szInfoTip,SIZEOF_ARRAY(szInfoTip));
+	pGetInfoTip->pszText = ::StrDup(szInfoTip);
+	
+	::PostMessage(::GetParent(self->m_hActiveListView), 
+		WM_USER_GETDISPINFO, 0, reinterpret_cast<LPARAM>(pGetInfoTip));
 }
 
 void Explorerplusplus::CreateFileInfoTip(int iItem,TCHAR *szInfoTip,UINT cchMax)

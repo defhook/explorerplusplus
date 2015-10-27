@@ -522,6 +522,7 @@ private:
 
 	/* File infotips. */
 	void					CreateFileInfoTip(int iItem,TCHAR *szInfoTip,UINT cchMax);
+	friend void CALLBACK GetInfoTipAPC(ULONG_PTR param);
 
 	/* Control creation. */
 	HWND					CreateMainListView(HWND hParent,DWORD Style);
@@ -791,6 +792,7 @@ private:
 	HANDLE					m_hIconThread;
 	HANDLE					m_hTreeViewIconThread;
 	HANDLE					m_hFolderSizeThread;
+	HANDLE					m_hInfotipThread;
 
 	HMODULE					m_hLanguageModule;
 

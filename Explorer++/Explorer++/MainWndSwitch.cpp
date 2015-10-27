@@ -176,6 +176,22 @@ LRESULT CALLBACK Explorerplusplus::WindowProcedure(HWND hwnd,UINT Msg,WPARAM wPa
 		OnDirectoryModified((int)wParam);
 		break;
 
+	case WM_USER_GETDISPINFO:
+		{
+			LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(lParam);
+			LVSETINFOTIP tip;
+			tip.cbSize = sizeof(LVSETINFOTIP);
+			tip.dwFlags = 0;
+			tip.iItem = pGetInfoTip->iItem;
+			tip.iSubItem = pGetInfoTip->iSubItem;
+			tip.pszText = pGetInfoTip->pszText;
+			::SendMessage(pGetInfoTip->hdr.hwndFrom, LVM_SETINFOTIP, wParam, reinterpret_cast<LPARAM>(&tip));
+			::LocalFree(pGetInfoTip->pszText);
+			delete pGetInfoTip;
+		}
+		
+		break;
+
 	case WM_APP_ASSOCCHANGED:
 		OnAssocChanged();
 		break;
