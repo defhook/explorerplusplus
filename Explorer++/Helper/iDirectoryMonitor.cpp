@@ -192,7 +192,7 @@ void CALLBACK CDirectoryMonitor::ExitWorkerThread(ULONG_PTR dwParam)
 	threads. */
 	SetEvent(pdm->m_hStopThreadEvent);
 
-	ExitThread(0);
+	//ExitThread(0);
 }
 
 int CDirectoryMonitor::WatchDirectory(const TCHAR *Directory, UINT WatchFlags,

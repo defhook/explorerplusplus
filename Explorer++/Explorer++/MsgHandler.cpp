@@ -1139,6 +1139,9 @@ int Explorerplusplus::OnDestroy(void)
 	}
 
 	QueueUserAPC(QuitIconAPC,m_hIconThread,NULL);
+	QueueUserAPC(QuitIconAPC,m_hTreeViewIconThread,NULL);
+	QueueUserAPC(QuitIconAPC,m_hFolderSizeThread,NULL);
+	QueueUserAPC(QuitIconAPC,m_hInfotipThread,NULL);
 
 	ImageList_Destroy(m_himlToolbarSmall);
 	ImageList_Destroy(m_himlToolbarLarge);

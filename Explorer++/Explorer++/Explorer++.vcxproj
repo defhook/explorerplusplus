@@ -219,6 +219,10 @@
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalLibraryDirectories>$(PANTHEIOS)\lib</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>upx.exe -9 $(OutDir)$(TargetName)$(TargetExt)</Command>
+      <Message>compressing target file...</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PreBuildEvent>
@@ -257,6 +261,12 @@
       <TargetMachine>MachineX64</TargetMachine>
       <AdditionalLibraryDirectories>$(PANTHEIOS)\lib</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>upx.exe -9 $(OutDir)$(TargetName)$(TargetExt)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>compressing target file...</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AboutDialog.cpp">
